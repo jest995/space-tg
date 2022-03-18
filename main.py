@@ -3,6 +3,7 @@ import os
 from urllib.parse import urlparse
 
 import requests
+import telegram
 from dotenv import load_dotenv
 
 
@@ -65,12 +66,16 @@ def get_image_earth():
 
 if __name__ == "__main__":
     load_dotenv()
-    try:
-        get_images_nasa()
-    except requests.exceptions.HTTPError as ex:
-        print(ex)
-        
-    try:
-        get_image_earth()
-    except requests.exceptions.HTTPError as ex:
-        print(ex)
+##    try:
+##        get_images_nasa()
+##    except requests.exceptions.HTTPError as ex:
+##        print(ex)
+##        
+##    try:
+##        get_image_earth()
+##    except requests.exceptions.HTTPError as ex:
+##        print(ex)
+
+    TOKEN = os.environ['TG_TOKEN']
+    bot = telegram.Bot(token=TOKEN)
+    bot.send_message(text='Hi!', chat_id=-1001631391427)
