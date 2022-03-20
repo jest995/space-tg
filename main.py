@@ -41,7 +41,7 @@ def get_images_nasa():
         print(f"Скачивается изображение NASA [{index+1}/{len(data)}]")
         img_url = data_list['hdurl']
         extension = get_ext(img_url)
-        filepath = f'images/nasa/NASA{index}.{extension}'
+        filepath = f'images/NASA{index}{extension}'
         upload_img(img_url, filepath)
 
 
@@ -56,7 +56,7 @@ def get_image_earth():
     data = response.json()
     for index, metadata_image in enumerate(data):
         print(f"Скачивается изображение Earth[{index+1}/{len(data)}]")
-        filepath = f'images/earth/Earth{index}.png'
+        filepath = f'images/Earth{index}.png'
         image = metadata_image["image"]
         date = datetime.datetime.fromisoformat(metadata_image["date"])
         formatted_date = date.strftime("%Y/%m/%d")
@@ -66,16 +66,10 @@ def get_image_earth():
 
 if __name__ == "__main__":
     load_dotenv()
-##    try:
-##        get_images_nasa()
-##    except requests.exceptions.HTTPError as ex:
-##        print(ex)
-##        
-##    try:
-##        get_image_earth()
-##    except requests.exceptions.HTTPError as ex:
-##        print(ex)
-
     TOKEN = os.environ['TG_TOKEN']
     bot = telegram.Bot(token=TOKEN)
-    bot.send_message(text='Hi!', chat_id=-1001631391427)
+    # bot.send_message(text='Hi!', chat_id=-1001631391427)
+    bot.send_photo(chat_id=-1001631391427, photo=open("images/NASA0..jpg", "rb"))
+    
+    # @NASAimg_bot
+
