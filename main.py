@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 from urllib.parse import urlparse
 
@@ -40,6 +41,7 @@ def get_images_nasa():
     for index, data_list in enumerate(data):
         print(f"Скачивается изображение NASA [{index+1}/{len(data)}]")
         img_url = data_list['hdurl']
+        logging.info(f"Скачивается изображение NASA [{index+1}/{len(data)}]")
         extension = get_ext(img_url)
         filepath = f'images/NASA{index}{extension}'
         upload_img(img_url, filepath)
@@ -63,8 +65,15 @@ def get_image_earth():
         url = f"https://api.nasa.gov/EPIC/archive/natural/{formatted_date}/png/{image}.png"
         upload_img(url, filepath, payload=payload)
 
+    logging.info("Скачивается изображение Earth")
 
 if __name__ == "__main__":
+    logging.basicConfig(filename="info.log",
+                        level=logging.INFO,
+                        format='%(asctime)s - %(message)s',
+                        datefmt='%d-%m-%y %H:%M:%S'
+                        )
+    logging.info("Start")
     load_dotenv()
     TOKEN = os.environ['TG_TOKEN']
     bot = telegram.Bot(token=TOKEN)
@@ -73,3 +82,7 @@ if __name__ == "__main__":
     
     # @NASAimg_bot
 
+            logging.info("Изображений не найдено. Скачиваю")
+                logging.exception("Exception occurred")
+            logging.info("Скачал все изображения")
+        logging.info("Старт паузы до отправки следующего сообщения в группу")
