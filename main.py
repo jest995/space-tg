@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import random
 from urllib.parse import urlparse
 
 import requests
@@ -85,4 +86,9 @@ if __name__ == "__main__":
             logging.info("Изображений не найдено. Скачиваю")
                 logging.exception("Exception occurred")
             logging.info("Скачал все изображения")
+        images_list = os.listdir('images')
+        image = random.choice(images_list)
+        bot.send_photo(chat_id=CHAT_ID, photo=open(f"images/{image}", "rb"))
+        os.unlink(f"images/{image}")
         logging.info("Старт паузы до отправки следующего сообщения в группу")
+        time.sleep(DELAY)
