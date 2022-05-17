@@ -65,16 +65,13 @@ def get_image_earth():
     response = requests.get(url, params=payload)
     response.raise_for_status()
     data = response.json()
-    for index, metadata_image in enumerate(data):
-        print(f"Скачивается изображение Earth[{index+1}/{len(data)}]")
-        filepath = f'images/Earth{index}.png'
-        image = metadata_image["image"]
-        date = datetime.datetime.fromisoformat(metadata_image["date"])
-        formatted_date = date.strftime("%Y/%m/%d")
-        url = f"https://api.nasa.gov/EPIC/archive/natural/{formatted_date}/png/{image}.png"
-        upload_img(url, filepath, payload=payload)
-
     logging.info("Скачивается изображение Earth")
+    filepath = f'images/Earth.png'
+    image = data[0]["image"]
+    date = datetime.datetime.fromisoformat(data[0]["date"])
+    formatted_date = date.strftime("%Y/%m/%d")
+    url = f"https://api.nasa.gov/EPIC/archive/natural/{formatted_date}/png/{image}.png"
+    upload_img(url, filepath, payload=payload)
 
 if __name__ == "__main__":
     logging.basicConfig(filename="info.log",
