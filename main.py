@@ -2,6 +2,7 @@ import datetime
 import logging
 import os
 import random
+import time
 from urllib.parse import urlparse
 
 import requests
@@ -34,18 +35,24 @@ def get_images_nasa():
     payload = {
         "api_key": api_key,
         "count": 3
+        "count": 10
     }
 
     response = requests.get(url, params=payload)
+    response.raise_for_status()
     data = response.json()
 
     for index, data_list in enumerate(data):
         print(f"Скачивается изображение NASA [{index+1}/{len(data)}]")
         img_url = data_list['hdurl']
         logging.info(f"Скачивается изображение NASA [{index+1}/{len(data)}]")
+        img_url = data_list['url']
         extension = get_ext(img_url)
         filepath = f'images/NASA{index}{extension}'
         upload_img(img_url, filepath)
+        if extension:
+            filepath = f'images/NASA{index}{extension}'
+            upload_img(img_url, filepath)
 
 
 def get_image_earth():
@@ -56,6 +63,7 @@ def get_image_earth():
     }
 
     response = requests.get(url, params=payload)
+    response.raise_for_status()
     data = response.json()
     for index, metadata_image in enumerate(data):
         print(f"Скачивается изображение Earth[{index+1}/{len(data)}]")
