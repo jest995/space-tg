@@ -82,15 +82,24 @@ if __name__ == "__main__":
     logging.info("Start")
     load_dotenv()
     TOKEN = os.environ['TG_TOKEN']
+    DELAY = int(os.environ['DELAY_POSTING'])
+    CHAT_ID = int(os.environ['CHAT_ID'])
+    os.makedirs('images/', exist_ok=True)
     bot = telegram.Bot(token=TOKEN)
-    # bot.send_message(text='Hi!', chat_id=-1001631391427)
-    bot.send_photo(chat_id=-1001631391427, photo=open("images/NASA0..jpg", "rb"))
-    
-    # @NASAimg_bot
 
+    while True:
+        if len(os.listdir('images')) == 0:
             logging.info("Изображений не найдено. Скачиваю")
+            try:
+                get_images_nasa()
+                get_image_earth()
+            except requests.exceptions.HTTPError as error:
                 logging.exception("Exception occurred")
+                time.sleep(10)
+                continue
+
             logging.info("Скачал все изображения")
+
         images_list = os.listdir('images')
         image = random.choice(images_list)
         bot.send_photo(chat_id=CHAT_ID, photo=open(f"images/{image}", "rb"))
